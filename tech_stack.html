@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AegisQR — Tech Stack</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0d1b2a;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(10,22,40,0.6);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:#fff;text-decoration:none;}
+.logo-dot{width:10px;height:10px;background:#00c8dc;border-radius:50%;}
+.nav-links{display:flex;gap:36px;list-style:none;font-size:15px;color:rgba(255,255,255,0.7);}
+.nav-links li{cursor:pointer;transition:color 0.2s;}
+.nav-links li:hover{color:#fff;}
+.nav-register{background:#00c8dc;color:#0d1b2a;padding:8px 20px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;border:none;font-family:'Inter',sans-serif;}
+.nav-register:hover{background:#00ddf0;}
+.nav-login{background:#00c8dc;color:#0d1b2a;padding:8px 20px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;border:none;font-family:'Inter',sans-serif;}
+.nav-login:hover{background:#00ddf0;}
+.nav-actions{display:flex;gap:8px;}
+
+.rs-bg-gradient{position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 50% at 70% 15%,rgba(20,60,100,0.35) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 15% 80%,rgba(10,40,80,0.25) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+.page-wrap{flex:1;position:relative;z-index:5;padding:48px 40px 80px;}
+.content{max-width:900px;margin:0 auto;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:20px;}
+.hero h1{font-size:clamp(30px,5vw,52px);font-weight:900;letter-spacing:-2px;line-height:1.08;margin-bottom:16px;}
+.hero h1 span{color:#00c8dc;font-style:italic;}
+.hero p{font-size:16px;color:rgba(255,255,255,0.5);line-height:1.75;max-width:600px;margin:0 auto;}
+
+.divider{height:1px;background:rgba(255,255,255,0.07);margin:10px 0;}
+
+/* SECTION */
+.section-label{font-size:12px;font-weight:700;letter-spacing:2px;color:#00c8dc;text-transform:uppercase;margin-bottom:10px;}
+.section-title{font-size:clamp(20px,3vw,28px);font-weight:600;letter-spacing:-0.8px;margin-bottom:8px;}
+.section-sub{font-size:15px;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:28px;max-width:580px;}
+
+/* TECH GRID */
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:8px;}
+.tech-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px 22px;transition:border-color 0.2s;}
+.tech-card:hover{border-color:rgba(0,200,220,0.25);}
+.tech-card-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.tech-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,200,220,0.08);border:1px solid rgba(0,200,220,0.18);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden;padding:4px;}
+.tech-icon svg{width:100%;height:100%;}
+.tech-name{font-size:15px;font-weight:700;color:#fff;}
+.tech-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:0.8px;color:#00c8dc;background:rgba(0,200,220,0.1);border:1px solid rgba(0,200,220,0.2);border-radius:20px;padding:3px 10px;margin-top:2px;}
+.tech-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;}
+
+/* ARCHITECTURE BLOCK */
+.arch-block{background:rgba(0,200,220,0.04);border:1px solid rgba(0,200,220,0.12);border-radius:16px;padding:32px 36px;margin:8px 0;}
+.arch-block h3{font-size:18px;font-weight:600;margin-bottom:20px;letter-spacing:-0.3px;}
+.arch-layers{display:flex;flex-direction:column;gap:12px;}
+.arch-layer{display:flex;align-items:center;gap:16px;}
+.layer-label{font-size:12px;font-weight:700;letter-spacing:1.2px;color:#00c8dc;text-transform:uppercase;width:110px;flex-shrink:0;}
+.layer-items{display:flex;flex-wrap:wrap;gap:8px;}
+.layer-pill{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:5px 14px;font-size:13px;color:rgba(255,255,255,0.7);font-weight:500;}
+.layer-arrow{color:rgba(0,200,220,0.4);font-size:18px;text-align:center;padding:2px 0;}
+
+/* ARCH LOGOS */
+.arch-block-inner{display:flex;gap:32px;align-items:stretch;}
+.arch-layers-col{flex:1;}
+.arch-logos-col{display:flex;flex-direction:column;justify-content:space-between;gap:0;padding:4px 0;min-width:280px;}
+.logo-row{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex:1;min-height:36px;}
+.logo-arrow-spacer{height:28px;}
+.tech-logo-badge{display:flex;flex-direction:column;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:16px 18px;transition:border-color 0.2s,background 0.2s;}
+.tech-logo-badge:hover{border-color:rgba(0,200,220,0.3);background:rgba(0,200,220,0.06);}
+.tech-logo-badge svg{width:66px;height:66px;flex-shrink:0;}
+.tech-logo-badge span{font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);}
+
+/* PRINCIPLES */
+.principles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.principle-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:22px 20px;}
+.principle-card h4{font-size:15px;font-weight:700;margin-bottom:6px;color:rgba(255,255,255,0.9);}
+.principle-card p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;}
+.principle-num{font-size:28px;font-weight:900;color:rgba(0,200,220,0.15);letter-spacing:-1px;margin-bottom:8px;}
+
+/* CTA */
+.cta{text-align:center;padding:48px 0 0;}
+.cta h2{font-size:clamp(24px,4vw,36px);font-weight:900;letter-spacing:-1.2px;margin-bottom:12px;}
+.cta h2 span{color:#00c8dc;font-style:italic;}
+.cta p{font-size:15px;color:rgba(255,255,255,0.45);margin-bottom:28px;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:#00c8dc;border:none;color:#0d1b2a;padding:13px 30px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);padding:13px 30px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+
+footer{background:#0a131f;border-top:1px solid rgba(255,255,255,0.07);padding:20px 40px;text-align:center;position:relative;z-index:5;}
+footer p{font-size:14px;color:rgba(255,255,255,0.3);}
+
+@media(max-width:700px){
+  nav{padding:14px 20px;}
+  .nav-links{display:none;}
+  .page-wrap{padding:32px 20px 60px;}
+  .tech-grid{grid-template-columns:1fr;}
+  .principles{grid-template-columns:1fr;}
+  .arch-block{padding:24px 20px;}
+  .arch-block-inner{flex-direction:column;}
+  .arch-logos-col{flex-direction:row;flex-wrap:wrap;min-width:unset;gap:8px;padding:12px 0 0;}
+  .logo-row{flex:unset;min-height:unset;}
+  .logo-arrow-spacer{display:none;}
+  .arch-layer{flex-direction:column;align-items:flex-start;}
+  .layer-label{width:auto;}
+}
+</style>
+</head>
+<body>
+
+<div class="rs-bg-gradient"></div>
+
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-dot"></div>
+    AegisQR
+  </a>
+  <ul class="nav-links">
+    <li>Features</li>
+    <li>How It Works</li>
+    <li><strong style="color:#fff;">Tech Stack</strong></li>
+    <li>Access</li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-register" onclick="window.location.href='aegisqr_register.html'">Register</button>
+    <button class="nav-login" onclick="window.location.href='1776019805969_aegisqr_login.html'">Login</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Built With the<br><span>Right Tools.</span></h1>
+      <p>AegisQR is built using a focused, modern tech stack — every technology chosen for a specific reason, nothing unnecessary.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BASE -->
+    <div class="section-label">Foundation</div>
+    <div class="section-title">Base Technologies</div>
+    <p class="section-sub">The core building blocks that every part of AegisQR is built upon.</p>
+
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#e44d26;border-color:#e44d26;">
+            <svg viewBox="0 0 50 56" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0h50L45.5 51.5 25 56 4.5 51.5z" fill="#e44d26"/>
+              <path d="M25 52.5l16.8-4.7 3.9-43.3H25z" fill="#f16529"/>
+              <path d="M25 23.5H16.8l-.6-6.5H25v-6.3H9.6l.2 1.9 1.7 19.2H25zM25 37.4l-.1.02-6.8-1.84-.44-4.9H11.4l.86 9.64L25 43.3v-5.9z" fill="#ebebeb"/>
+              <path d="M25 23.5v6.3h7.5l-.7 8.16-6.8 1.84v5.9l13.14-3.64.1-1 1.54-17.26H25zM25 10.7v6.3h14.3l.12-1.35.26-2.84.1-2.11z" fill="#fff"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">HTML</div>
+            <div class="tech-tag">Structure</div>
+          </div>
+        </div>
+        <p class="tech-desc">Provides the semantic structure for every page in AegisQR — from the login screen to the emergency profile view scanned by first responders.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#264de4;border-color:#264de4;">
+            <svg viewBox="0 0 50 56" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0h50L45.5 51.5 25 56 4.5 51.5z" fill="#264de4"/>
+              <path d="M25 52.5l16.8-4.7 3.9-43.3H25z" fill="#2965f1"/>
+              <path d="M25 23.5H16.8l-.6-6.5H25v-6.3H9.6l.2 1.9 1.7 19.2H25zM25 37.4l-.1.02-6.8-1.84-.44-4.9H11.4l.86 9.64L25 43.3v-5.9z" fill="#ebebeb"/>
+              <path d="M25 23.5v6.3h7.5l-.7 8.16-6.8 1.84v5.9l13.14-3.64.1-1 1.54-17.26H25zM25 10.7v6.3h14.3l.12-1.35.26-2.84.1-2.11z" fill="#fff"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">CSS</div>
+            <div class="tech-tag">Styling</div>
+          </div>
+        </div>
+        <p class="tech-desc">Handles all visual design — layout, colours, typography, and responsiveness. Every screen is styled to work cleanly on mobile and desktop alike.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#f7df1e;border-color:#f7df1e;">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" fill="#f7df1e"/>
+              <path d="M9.5 25.3l2.32-1.4c.45.8.86 1.47 1.84 1.47.94 0 1.53-.37 1.53-1.8V14.5h2.86v9.1c0 2.97-1.74 4.32-4.27 4.32-2.29 0-3.62-1.19-4.28-2.62zM19.6 25l2.32-1.34c.61 1 1.4 1.74 2.8 1.74 1.18 0 1.93-.59 1.93-1.4 0-.97-.77-1.32-2.07-1.89l-.71-.3c-2.05-.87-3.41-1.97-3.41-4.29 0-2.13 1.62-3.76 4.16-3.76 1.81 0 3.1.63 4.04 2.27l-2.21 1.42c-.49-.87-1.01-1.21-1.83-1.21-.83 0-1.36.53-1.36 1.21 0 .85.53 1.19 1.75 1.72l.71.3c2.41 1.03 3.78 2.09 3.78 4.47 0 2.56-2.01 3.96-4.71 3.96-2.64 0-4.35-1.26-5.19-2.9z" fill="#323330"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">JavaScript</div>
+            <div class="tech-tag">Interactivity</div>
+          </div>
+        </div>
+        <p class="tech-desc">Powers all client-side logic — form validation, dynamic UI updates, QR code generation, and communication with the backend API.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FRONTEND FRAMEWORK -->
+    <div class="section-label">Frontend Framework</div>
+    <div class="section-title">React.js</div>
+    <p class="section-sub">React powers the interactive dashboard and profile management interface.</p>
+
+    <div class="tech-grid" style="grid-template-columns: 1fr;">
+      <div class="tech-card" style="display:flex;gap:20px;align-items:flex-start;">
+        <div class="tech-icon" style="flex-shrink:0;background:#20232a;border-color:#61dafb;">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="2.8" fill="#61dafb"/>
+            <ellipse cx="16" cy="16" rx="12" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none"/>
+            <ellipse cx="16" cy="16" rx="12" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(60 16 16)"/>
+            <ellipse cx="16" cy="16" rx="12" ry="4.5" stroke="#61dafb" stroke-width="1.5" fill="none" transform="rotate(120 16 16)"/>
+          </svg>
+        </div>
+        <div>
+          <div class="tech-name" style="margin-bottom:6px;">React.js</div>
+          <div class="tech-tag" style="margin-bottom:12px;">UI Framework</div>
+          <p class="tech-desc">Used to build the user dashboard where people manage their medical profiles, update personal information, and download their QR codes. React's component-based architecture keeps the interface fast, modular, and easy to maintain as features grow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BACKEND -->
+    <div class="section-label">Backend</div>
+    <div class="section-title">Node.js + Express.js</div>
+    <p class="section-sub">The server-side layer that handles all API requests, authentication, and data flow.</p>
+
+    <div class="tech-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#3d873a;border-color:#3d873a;">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="48" fill="#3d873a"/>
+              <polygon points="50,18 74,31 74,57 50,70 26,57 26,31" fill="none" stroke="#fff" stroke-width="4"/>
+              <text x="50" y="53" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="900" fill="#fff" letter-spacing="-1">JS</text>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">Node.js</div>
+            <div class="tech-tag">Runtime</div>
+          </div>
+        </div>
+        <p class="tech-desc">The JavaScript runtime that runs AegisQR's server. Its non-blocking, event-driven model handles many simultaneous QR scan requests efficiently — essential for emergency situations where delays are unacceptable.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#353535;border-color:#555;">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" fill="#353535"/>
+              <text x="16" y="14" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif" font-size="9" font-weight="700" fill="#ffffff">express</text>
+              <line x1="6" y1="18" x2="26" y2="18" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
+              <text x="16" y="25" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif" font-size="6" font-weight="400" fill="rgba(255,255,255,0.4)">.js</text>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">Express.js</div>
+            <div class="tech-tag">API Framework</div>
+          </div>
+        </div>
+        <p class="tech-desc">A minimal web framework layered on top of Node.js. It defines and manages all REST API routes — including user registration, login, profile updates, and the public QR scan endpoint that first responders access.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- DATABASES -->
+    <div class="section-label">Databases</div>
+    <div class="section-title">MongoDB + MySQL</div>
+    <p class="section-sub">Two databases used together — each suited to the type of data it stores.</p>
+
+    <div class="tech-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#001e2b;border-color:#00ed64;">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2C16 2 8.5 11 8.5 18.5a7.5 7.5 0 0015 0C23.5 11 16 2 16 2z" fill="#00ed64"/>
+              <path d="M16 3v25" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+              <path d="M16 28c-1.5-1-3-3-3-5" stroke="#00ed64" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">MongoDB</div>
+            <div class="tech-tag">Medical Profiles</div>
+          </div>
+        </div>
+        <p class="tech-desc">Stores medical profile data as flexible documents. Since every user's health information is different — varying conditions, varying number of medications — MongoDB's schema-flexible model is a natural fit.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#00758f;border-color:#00758f;">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" fill="#00758f"/>
+              <text x="16" y="14" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif" font-size="7" font-weight="900" fill="#fff" letter-spacing="0.5">MySQL</text>
+              <path d="M6 18 Q10 15 14 18 Q18 21 22 17 Q25 14 27 16" stroke="#f29111" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <circle cx="27" cy="16" r="2" fill="#f29111"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">MySQL</div>
+            <div class="tech-tag">User Accounts</div>
+          </div>
+        </div>
+        <p class="tech-desc">Stores structured user account data — email addresses, hashed passwords, account status, and login records. MySQL's relational structure enforces data integrity for the authentication system.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- AUTH -->
+    <div class="section-label">Authentication & Security</div>
+    <div class="section-title">JWT + bcrypt</div>
+    <p class="section-sub">Two focused tools that together handle secure login sessions and password protection.</p>
+
+    <div class="tech-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#000;border-color:#fb015b;">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" fill="#000"/>
+              <path d="M16 4l1.5 6h-3L16 4zM16 28l-1.5-6h3L16 28z" fill="#fb015b"/>
+              <path d="M4 16l6-1.5v3L4 16zM28 16l-6 1.5v-3L28 16z" fill="#00f2e6"/>
+              <path d="M7.5 7.5l4.5 4.5-2.1 2.1-4.5-4.5 2.1-2.1zM24.5 24.5l-4.5-4.5 2.1-2.1 4.5 4.5-2.1 2.1z" fill="#fb015b"/>
+              <path d="M24.5 7.5l-4.5 4.5 2.1 2.1 4.5-4.5-2.1-2.1zM7.5 24.5l4.5-4.5-2.1-2.1-4.5 4.5 2.1 2.1z" fill="#00f2e6"/>
+              <circle cx="16" cy="16" r="3" fill="#fff"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">JWT</div>
+            <div class="tech-tag">Login Sessions</div>
+          </div>
+        </div>
+        <p class="tech-desc">JSON Web Tokens are issued when a user logs in and sent with every subsequent API request. The server verifies the token to confirm the user's identity without needing to query the database on every request. Tokens expire automatically for security.</p>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-top">
+          <div class="tech-icon" style="background:#1a1a2e;border-color:#4a90d9;">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" fill="#1a1a2e"/>
+              <rect x="7" y="15" width="18" height="13" rx="2.5" fill="#4a90d9"/>
+              <path d="M11 15V11a5 5 0 0110 0v4" stroke="#4a90d9" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="16" cy="21" r="2.5" fill="#fff"/>
+              <line x1="16" y1="23.5" x2="16" y2="26" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="tech-name">bcrypt</div>
+            <div class="tech-tag">Password Hashing</div>
+          </div>
+        </div>
+        <p class="tech-desc">Before any password is stored, bcrypt transforms it into a secure hash using a salt and a configurable work factor. Even if the database were ever compromised, the original passwords could not be recovered from the stored hashes.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FULL STACK AT A GLANCE -->
+    <div style="margin: 40px 0;">
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;">
+
+        <!-- FOUNDATION -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:2px;color:#00c8dc;text-transform:uppercase;margin-bottom:16px;">Foundation</div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" style="width:56px;height:56px;">HTML
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" style="width:56px;height:56px;">CSS
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="width:56px;height:56px;">JavaScript
+            </div>
+          </div>
+        </div>
+
+        <!-- FRONTEND -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:2px;color:#00c8dc;text-transform:uppercase;margin-bottom:16px;">Frontend</div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" style="width:56px;height:56px;">React.js
+            </div>
+          </div>
+        </div>
+
+        <!-- BACKEND -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:2px;color:#00c8dc;text-transform:uppercase;margin-bottom:16px;">Backend</div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" style="width:56px;height:56px;">Node.js
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" style="width:56px;height:56px;filter:invert(1);">Express.js
+            </div>
+          </div>
+        </div>
+
+        <!-- DATABASE -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:2px;color:#00c8dc;text-transform:uppercase;margin-bottom:16px;">Database</div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" style="width:56px;height:56px;">MongoDB
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.05);padding:18px 26px;border-radius:14px;font-size:22px;font-weight:600;">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" style="width:56px;height:56px;">MySQL
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <h2>Solid Stack.<br><span>Life-Saving</span> Purpose.</h2>
+      <p>Built with care. Protected by design. Ready when you need it most.</p>
+      <div class="cta-btns">
+        <button class="btn-primary" onclick="window.location.href='aegisqr_register.html'">Create My Free Account</button>
+        <button class="btn-secondary" onclick="window.location.href='aegisqr_how_it_works.html'">How It Works</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>&#169; 2026 AegisQR. All rights reserved. &middot; <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Privacy Policy</a> &middot; <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Terms</a></p>
+</footer>
+
+</body>
+</html>

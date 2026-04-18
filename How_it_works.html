@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AegisQR — How It Works</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0d1b2a;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(10,22,40,0.6);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:#fff;text-decoration:none;}
+.logo-dot{width:10px;height:10px;background:#00c8dc;border-radius:50%;}
+.nav-links{display:flex;gap:36px;list-style:none;font-size:15px;color:rgba(255,255,255,0.7);}
+.nav-links li{cursor:pointer;transition:color 0.2s;}
+.nav-links li:hover{color:#fff;}
+.nav-signin{background:#00c8dc;color:#0d1b2a;padding:8px 20px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;border:none;font-family:'Inter',sans-serif;}
+.nav-signin:hover{background:#00ddf0;}
+.nav-register{background:#00c8dc;color:#0d1b2a;padding:8px 20px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;border:none;font-family:'Inter',sans-serif;}
+.nav-register:hover{background:#00ddf0;}
+.nav-login{background:#00c8dc;color:#0d1b2a;padding:8px 20px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;border:none;font-family:'Inter',sans-serif;margin-left:8px;}
+.nav-login:hover{background:#00ddf0;}
+.nav-actions{display:flex;gap:8px;}
+
+.rs-bg-gradient{position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 50% at 70% 15%,rgba(20,60,100,0.35) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 15% 80%,rgba(10,40,80,0.25) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+.page-wrap{flex:1;position:relative;z-index:5;padding:28px 40px 80px;}
+.content{max-width:860px;margin:0 auto;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:20px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,200,220,0.35);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:600;letter-spacing:1.2px;color:rgba(255,255,255,0.88);margin-bottom:24px;background:rgba(0,150,180,0.10);}
+.badge-dot{width:6px;height:6px;background:#00c8dc;border-radius:50%;}
+.hero h1{font-size:clamp(32px,5vw,54px);font-weight:900;letter-spacing:-2px;line-height:1.08;margin-bottom:18px;}
+.hero h1 span{color:#00c8dc;font-style:italic;}
+.hero p{font-size:17px;color:rgba(255,255,255,0.5);line-height:1.75;max-width:720px;margin:0 auto;}
+
+/* DIVIDER */
+.divider{height:1px;background:rgba(255,255,255,0.07);margin:10px 0;}
+
+/* SECTION TITLE */
+.section-label{font-size:12px;font-weight:700;letter-spacing:2px;color:#00c8dc;text-transform:uppercase;margin-bottom:10px;}
+.section-title{font-size:clamp(22px,3vw,30px);font-weight:600;letter-spacing:-1px;margin-bottom:10px;}
+.section-sub{font-size:15px;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:40px;max-width:560px;}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{display:flex;gap:28px;padding:32px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.step:last-child{border-bottom:none;}
+.step-left{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;}
+.step-num{width:44px;height:44px;border-radius:50%;background:rgba(0,200,220,0.1);border:1.5px solid rgba(0,200,220,0.3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#00c8dc;flex-shrink:0;}
+.step-line{width:1.5px;flex:1;background:rgba(0,200,220,0.15);margin-top:8px;}
+.step:last-child .step-line{display:none;}
+.step-body{padding-top:8px;}
+.step-body h3{font-size:18px;font-weight:600;letter-spacing:-0.4px;margin-bottom:8px;max-width:320px;line-height:1.3;}
+.step-body p{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.75;margin-bottom:0;}
+.step-body .step-note{margin-top:12px;background:rgba(0,200,220,0.06);border:1px solid rgba(0,200,220,0.15);border-radius:8px;padding:12px 16px;font-size:14px;color:rgba(255,255,255,0.55);line-height:1.65;}
+.step-note strong{color:rgba(0,200,220,0.85);font-weight:600;}
+
+/* QR SECTION */
+.qr-section{background:rgba(0,200,220,0.05);border:1px solid rgba(0,200,220,0.12);border-radius:16px;padding:36px 40px;margin:56px 0;}
+.qr-section h2{font-size:22px;font-weight:600;letter-spacing:-0.6px;margin-bottom:12px;}
+.qr-section p{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.75;}
+
+/* WHO SECTION */
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:0;}
+.who-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 22px;}
+.who-card .who-icon{width:40px;height:40px;background:rgba(0,200,220,0.1);border:1px solid rgba(0,200,220,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.who-card h4{font-size:15px;font-weight:700;margin-bottom:6px;}
+.who-card p{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.65;}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:0;}
+.faq-item{padding:22px 0;border-bottom:1px solid rgba(255,255,255,0.07);}
+.faq-item:last-child{border-bottom:none;}
+.faq-item h4{font-size:16px;font-weight:700;margin-bottom:8px;color:rgba(255,255,255,0.9);}
+.faq-item p{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.7;}
+
+/* CTA */
+.cta{text-align:center;padding:56px 0 0;}
+.cta h2{font-size:clamp(26px,4vw,38px);font-weight:900;letter-spacing:-1.2px;margin-bottom:14px;}
+.cta h2 span{color:#00c8dc;font-style:italic;}
+.cta p{font-size:16px;color:rgba(255,255,255,0.45);margin-bottom:32px;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:#00c8dc;border:none;color:#0d1b2a;padding:14px 32px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);padding:14px 32px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+
+footer{background:#0a131f;border-top:1px solid rgba(255,255,255,0.07);padding:20px 40px;text-align:center;position:relative;z-index:5;}
+footer p{font-size:14px;color:rgba(255,255,255,0.3);}
+
+@media(max-width:700px){
+  nav{padding:14px 20px;}
+  .nav-links{display:none;}
+  .page-wrap{padding:40px 20px 60px;}
+  .who-grid{grid-template-columns:1fr;}
+  .qr-section{padding:28px 24px;}
+  .step{gap:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="rs-bg-gradient"></div>
+
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-dot"></div>
+    AegisQR
+  </a>
+  <ul class="nav-links">
+    <li>Features</li>
+    <li><strong style="color:#fff;">How It Works</strong></li>
+    <li>Tech Stack</li>
+    <li>Access</li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-register" onclick="window.location.href='aegisqr_register.html'">Register</button>
+    <button class="nav-login" onclick="window.location.href='1776019805969_aegisqr_login.html'">Login</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Simple Setup.<br><span>Life-Saving</span> Results.</h1>
+      <p>AegisQR turns your critical medical information into a scannable QR code — accessible by any first responder in seconds, no app or login required.</p>
+      <p style="margin-top:14px;font-size:22px;color:#00c8dc;font-style:italic;max-width:620px;margin-left:auto;margin-right:auto;">In an emergency, when every second matters and you can't speak for yourself, AegisQR speaks for you.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- STEPS -->
+    <div class="section-label">The Process</div>
+    <div class="section-title">4 Steps to Full Protection</div>
+    <p class="section-sub">From sign-up to wearing your QR code, the entire process takes less than 10 minutes.</p>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Create Your Free Account</h3>
+          <p>Sign up with your email address or continue with Google. No credit card needed — AegisQR is completely free to use. Your account is secured with industry-standard encryption from the moment it's created.</p>
+          <div class="step-note"><strong>Note:</strong> Your personal login credentials are never shared with anyone. Only the medical profile data you choose to make visible is accessible via your QR code.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Fill In Your Medical Profile</h3>
+          <p>Enter your critical health information into your secure profile. This includes your blood type, known allergies, current medications, existing medical conditions, and emergency contact numbers. You can fill in as much or as little as you're comfortable sharing.</p>
+          <div class="step-note"><strong>What you can include:</strong> Blood type · Allergies · Current medications · Chronic conditions · Organ donor status · Emergency contacts · Doctor's contact · Insurance details · Medical directives (e.g., avoid certain drugs, emergency instructions, DNR preferences).</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>Generate Your Personal QR Code</h3>
+          <p>Once your profile is saved, AegisQR instantly generates a unique QR code linked to your medical profile. This code is yours permanently. Download it, print it, or add it to your phone's lock screen wallpaper.</p>
+          <div class="step-note"><strong>Where people keep their QR code:</strong> Printed on a wallet card · On a medical ID wristband · As a phone lock screen · Stuck inside a helmet · On a keychain tag · On the back of a phone case.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <h3>First Responders Scan & Act Instantly</h3>
+          <p>In an emergency, a paramedic, doctor, or bystander simply scans your QR code with any smartphone camera. They are immediately shown your medical profile — no app download, no login, no delay. The information they need is right there in seconds.</p>
+          <div class="step-note"><strong>What responders see:</strong> Your name and photo · Blood type · Critical allergies · Active medications · Medical conditions · Emergency contact with phone number · Any special instructions you've written for responders.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- QR CARD -->
+    <div class="qr-section">
+      <h2>Always Up to Date</h2>
+      <p>Your QR code never changes — but your medical profile can be updated anytime from your account dashboard. Changed medications? New allergy discovered? Updated emergency contact? Simply log in, edit your profile, and save. Anyone who scans your QR code will always see your most current information. There is no need to reprint or redistribute anything.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- WHO IS IT FOR -->
+    <div class="section-label">Who It's For</div>
+    <div class="section-title">Built for Everyone</div>
+    <p class="section-sub">AegisQR is designed for any person who wants their medical information to be available when they can't speak for themselves.</p>
+
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h4>Everyday Adults</h4>
+        <p>Anyone with allergies, chronic conditions, or medications who wants peace of mind in case of an accident.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <h4>Elderly Individuals</h4>
+        <p>Seniors managing multiple medications or conditions benefit greatly from having their health info instantly accessible.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>Athletes & Adventurers</h4>
+        <p>Cyclists, hikers, runners, and extreme sport enthusiasts who operate in areas where help may be delayed.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2"><path d="M12 1L3 5v6c0 5.25 3.75 10.15 9 11.35C17.25 21.15 21 16.25 21 11V5L12 1z"/></svg>
+        </div>
+        <h4>Children & Students</h4>
+        <p>Parents can set up profiles for their children so schools, coaches, or emergency services have accurate health data.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.63 3.37 2 2 0 013.6 1.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 8.77a16 16 0 006.29 6.29l.95-.95a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <h4>Travellers</h4>
+        <p>People travelling abroad where language barriers can delay treatment. Your profile can be read in any country.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
+        </div>
+        <h4>People with Disabilities</h4>
+        <p>Individuals who may be unable to communicate their needs verbally in an emergency situation.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- PRIVACY -->
+    <div class="section-label">Privacy & Security</div>
+    <div class="section-title">Your Data. Your Control.</div>
+    <p class="section-sub">We take the privacy of your health information seriously. Here is exactly how we protect it.</p>
+
+    <div class="faq">
+      <div class="faq-item">
+        <h4>Who can see my medical profile?</h4>
+        <p>Only people who physically scan your QR code can view your profile. The link embedded in your QR code is unique and not indexed by search engines. It is not discoverable without the physical code itself.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Is my data encrypted?</h4>
+        <p>Yes. Your data is securely encrypted and protected using industry-standard security practices. Your login password is hashed and is never stored in plain text.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I choose what information is visible on my QR profile?</h4>
+        <p>Absolutely. You have full control over which fields appear on your public-facing emergency profile. You can hide any section you are not comfortable sharing while still keeping the rest visible.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I delete my account and data?</h4>
+        <p>Yes. You can permanently delete your account and all associated data at any time from your account settings. Once deleted, your QR code will no longer display any information.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Does AegisQR sell my health data?</h4>
+        <p>Never. AegisQR does not sell, rent, or share your personal or medical data with any third party, advertiser, or partner. Your health information exists solely to help you in an emergency.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <h2>Ready to Set Up Your<br><span>Medical ID?</span></h2>
+      <p>It takes less than 10 minutes. Free forever. No credit card required.</p>
+      <div class="cta-btns">
+        <button class="btn-primary" onclick="window.location.href='aegisqr_register.html'">Create My Free Account</button>
+        <button class="btn-secondary" onclick="window.location.href='1776019805969_aegisqr_login.html'">Sign In</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>&#169; 2026 AegisQR. All rights reserved. &middot; <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Privacy Policy</a> &middot; <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Terms</a></p>
+</footer>
+
+</body>
+</html>

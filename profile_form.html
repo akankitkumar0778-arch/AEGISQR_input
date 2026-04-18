@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AegisQR — Create Your Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0d1b2a;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(10,22,40,0.6);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:700;color:#fff;text-decoration:none;}
+.logo-dot{width:10px;height:10px;background:#00c8dc;border-radius:50%;}
+.nav-links{display:flex;gap:36px;list-style:none;font-size:15px;color:rgba(255,255,255,0.7);}
+.nav-links li{cursor:pointer;transition:color 0.2s;}
+.nav-links li:hover{color:#fff;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.78);border:1px solid rgba(255,255,255,0.2);padding:8px 14px;border-radius:6px;font-size:13px;cursor:pointer;transition:all 0.2s;}
+.btn-outline:hover{border-color:rgba(255,255,255,0.45);color:#fff;}
+
+.page-wrap{max-width:860px;margin:0 auto;padding:48px 24px 80px;}
+
+.page-header{text-align:center;margin-bottom:48px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,200,220,0.35);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:600;letter-spacing:1.2px;color:rgba(255,255,255,0.88);margin-bottom:18px;background:rgba(0,150,180,0.10);}
+.badge-dot{width:6px;height:6px;background:#00c8dc;border-radius:50%;box-shadow:0 0 6px #00c8dc;animation:blink 1.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.page-title{font-size:clamp(30px,5vw,50px);font-weight:900;letter-spacing:-1.5px;line-height:1.08;margin-bottom:14px;}
+.page-title span{color:#00c8dc;font-style:italic;}
+.page-subtitle{font-size:17px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:520px;margin:0 auto;}
+
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:48px;}
+.step{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:rgba(255,255,255,0.35);cursor:pointer;transition:color 0.2s;}
+.step.active{color:#fff;}
+.step.done{color:#00c8dc;}
+.step-num{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;transition:all 0.3s;}
+.step.active .step-num{border-color:#00c8dc;background:rgba(0,200,220,0.15);color:#00c8dc;}
+.step.done .step-num{border-color:#00c8dc;background:#00c8dc;color:#0d1b2a;}
+.step-line{width:60px;height:1px;background:rgba(255,255,255,0.12);margin:0 8px;}
+.step-line.done{background:#00c8dc;}
+
+.form-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:36px 40px;margin-bottom:24px;}
+.section-title{font-size:13px;font-weight:700;letter-spacing:1.8px;color:#00c8dc;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:rgba(0,200,220,0.15);}
+
+.field-grid{display:grid;gap:20px;}
+.field-grid.two{grid-template-columns:1fr 1fr;}
+.field-grid.three{grid-template-columns:1fr 1fr 1fr;}
+
+.field{display:flex;flex-direction:column;gap:7px;}
+.field label{font-size:15px;font-weight:600;color:rgba(255,255,255,0.55);letter-spacing:0.4px;}
+.field input,.field select,.field textarea{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-family:'Inter',sans-serif;font-size:16px;padding:11px 14px;outline:none;transition:border-color 0.2s,background 0.2s;width:100%;}
+.field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.22);}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(0,200,220,0.5);background:rgba(0,200,220,0.04);}
+.field select option{background:#0d1b2a;color:#fff;}
+.field textarea{resize:vertical;min-height:80px;line-height:1.6;}
+
+.field-hint{font-size:13px;color:rgba(255,255,255,0.3);margin-top:3px;}
+
+.avatar-row{display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+.avatar-circle{width:72px;height:72px;border-radius:50%;background:rgba(0,200,220,0.12);border:2px dashed rgba(0,200,220,0.35);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;}
+.avatar-circle:hover{background:rgba(0,200,220,0.18);border-color:rgba(0,200,220,0.6);}
+.avatar-icon{width:24px;height:24px;opacity:0.45;}
+.avatar-info{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.avatar-info strong{color:rgba(255,255,255,0.8);display:block;margin-bottom:2px;font-size:15px;}
+
+.blood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px;}
+.blood-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.55);font-family:'Inter',sans-serif;font-size:15px;font-weight:600;padding:10px 6px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.blood-btn:hover{border-color:rgba(0,200,220,0.4);color:#fff;}
+.blood-btn.selected{border-color:#00c8dc;background:rgba(0,200,220,0.12);color:#00c8dc;}
+
+.tag-input-wrap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;min-height:48px;align-items:flex-start;cursor:text;transition:border-color 0.2s;}
+.tag-input-wrap:focus-within{border-color:rgba(0,200,220,0.5);background:rgba(0,200,220,0.04);}
+.tag{background:rgba(0,200,220,0.12);border:1px solid rgba(0,200,220,0.25);color:#00c8dc;border-radius:20px;padding:3px 10px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:5px;}
+.tag-x{cursor:pointer;opacity:0.6;font-size:14px;line-height:1;}
+.tag-x:hover{opacity:1;}
+.tag-input{background:transparent;border:none;color:#fff;font-family:'Inter',sans-serif;font-size:15px;outline:none;min-width:100px;flex:1;padding:2px 4px;}
+.tag-input::placeholder{color:rgba(255,255,255,0.22);}
+
+.toggle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.toggle-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all 0.2s;}
+.toggle-item:hover{border-color:rgba(255,255,255,0.15);}
+.toggle-item.on{border-color:rgba(0,200,220,0.3);background:rgba(0,200,220,0.06);}
+.toggle-label{font-size:15px;color:rgba(255,255,255,0.7);}
+.toggle-item.on .toggle-label{color:#fff;}
+.toggle-sw{width:34px;height:18px;border-radius:9px;background:rgba(255,255,255,0.15);position:relative;transition:background 0.2s;flex-shrink:0;}
+.toggle-item.on .toggle-sw{background:#00c8dc;}
+.toggle-sw::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left 0.2s;}
+.toggle-item.on .toggle-sw::after{left:19px;}
+
+.emergency-card{background:rgba(220,40,40,0.07);border:1px solid rgba(220,40,40,0.2);border-radius:12px;padding:20px 24px;margin-top:8px;}
+.emergency-label{font-size:13px;font-weight:700;letter-spacing:1.5px;color:rgba(220,100,100,0.9);text-transform:uppercase;margin-bottom:14px;}
+
+.nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:32px;}
+.btn-back{background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:12px 24px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.btn-back:hover{border-color:rgba(255,255,255,0.35);color:#fff;}
+.btn-next{background:#00c8dc;border:none;color:#0d1b2a;padding:12px 32px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+.btn-next:hover{background:#00ddf0;transform:translateY(-1px);}
+.btn-next svg{width:16px;height:16px;}
+
+.success-screen{text-align:center;padding:60px 24px;}
+.success-icon{width:72px;height:72px;border-radius:50%;background:rgba(0,200,220,0.12);border:2px solid rgba(0,200,220,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;}
+.success-title{font-size:32px;font-weight:900;letter-spacing:-1px;margin-bottom:12px;}
+.success-sub{font-size:16px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:420px;margin:0 auto 32px;}
+.qr-placeholder{width:140px;height:140px;border:2px dashed rgba(0,200,220,0.35);border-radius:12px;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;background:rgba(0,200,220,0.04);}
+.btn-primary-full{background:#00c8dc;border:none;color:#0d1b2a;padding:14px 40px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;margin:0 6px;}
+.btn-primary-full:hover{background:#00ddf0;}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);padding:14px 40px;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;margin:0 6px;}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.35);color:#fff;}
+
+.progress-bar{height:3px;background:rgba(255,255,255,0.07);border-radius:2px;margin-bottom:48px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00c8dc,#0090a8);border-radius:2px;transition:width 0.4s ease;}
+
+footer{background:#0a131f;border-top:1px solid rgba(255,255,255,0.07);padding:28px 40px;text-align:center;}
+footer p{font-size:14px;color:rgba(255,255,255,0.3);}
+
+@media(max-width:640px){
+  .field-grid.two,.field-grid.three{grid-template-columns:1fr;}
+  .blood-grid{grid-template-columns:repeat(4,1fr);}
+  .toggle-grid{grid-template-columns:1fr;}
+  nav{padding:14px 20px;}
+  .nav-links{display:none;}
+  .form-card{padding:24px 20px;}
+  .page-wrap{padding:32px 16px 60px;}
+  .step-line{width:32px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-dot"></div>
+    AegisQR
+  </a>
+  <ul class="nav-links">
+    <li>Home</li><li>Features</li><li>How It Works</li><li>Contact</li>
+  </ul>
+
+</nav>
+
+<div class="page-wrap">
+  <div id="form-header">
+  <div class="page-header">
+    <div class="page-badge"><div class="badge-dot"></div> NEW PROFILE</div>
+    <h1 class="page-title">Create Your <span>Medical ID</span></h1>
+    <p class="page-subtitle">Fill in your details to generate a secure emergency QR code. First responders can access critical info instantly.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step done" id="step-ind-1" onclick="goTo(1)">
+      <div class="step-num">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      Basic Details
+    </div>
+    <div class="step-line" id="line-1"></div>
+    <div class="step active" id="step-ind-2">
+      <div class="step-num">2</div>
+      Medical Info
+    </div>
+    <div class="step-line" id="line-2"></div>
+    <div class="step" id="step-ind-3">
+      <div class="step-num">3</div>
+      Emergency
+    </div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:33%"></div></div>
+  </div><!-- /form-header -->
+
+  <!-- STEP 1 -->
+  <div id="view-1">
+    <div class="form-card">
+      <div class="section-title">Personal Information</div>
+
+      <div class="avatar-row">
+        <div class="avatar-circle" onclick="document.getElementById('photo-inp').click()">
+          <svg class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(0,200,220,0.7)" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <input type="file" id="photo-inp" accept="image/*" style="display:none" onchange="previewPhoto(this)"/>
+        </div>
+        <div class="avatar-info">
+          <strong>Upload Photo</strong>
+          Helps first responders identify you quickly.<br>
+          <span style="font-size:11px;opacity:0.6;">JPG or PNG, max 5 MB</span>
+        </div>
+      </div>
+
+      <div class="field-grid two">
+        <div class="field">
+          <label>First Name *</label>
+          <input type="text" placeholder="e.g. Rohan" id="fname"/>
+        </div>
+        <div class="field">
+          <label>Last Name *</label>
+          <input type="text" placeholder="e.g. Sharma" id="lname"/>
+        </div>
+        <div class="field">
+          <label>Date of Birth *</label>
+          <input type="date" id="dob"/>
+        </div>
+        <div class="field">
+          <label>Gender *</label>
+          <select id="gender">
+            <option value="" disabled selected>Select gender</option>
+            <option>Male</option><option>Female</option>
+            <option>Non-binary</option><option>Prefer not to say</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Nationality</label>
+          <input type="text" placeholder="e.g. Indian" id="nationality"/>
+        </div>
+        <div class="field">
+          <label>Preferred Language</label>
+          <select id="language">
+            <option value="" disabled selected>Select language</option>
+            <option>English</option><option>Hindi</option><option>Tamil</option>
+            <option>Telugu</option><option>Marathi</option><option>Bengali</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">Contact &amp; Identity</div>
+      <div class="field-grid two">
+        <div class="field">
+          <label>Phone Number *</label>
+          <input type="tel" pattern="[0-9]{10}" placeholder="10-digit number" id="phone"/>
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@email.com" id="email"/>
+        </div>
+        <div class="field">
+          <label>Aadhar / National ID</label>
+          <input type="text" placeholder="Optional — for identity verification" id="natid"/>
+        </div>
+        <div class="field">
+          <label>Health Insurance No.</label>
+          <input type="text" placeholder="Optional" id="insurance"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">Address</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Street Address</label>
+          <input type="text" placeholder="House / flat, street name" id="address"/>
+        </div>
+      </div>
+      <div class="field-grid three" style="margin-top:20px;">
+        <div class="field">
+          <label>City *</label>
+          <input type="text" placeholder="e.g. Mumbai" id="city"/>
+        </div>
+        <div class="field">
+          <label>State</label>
+          <input type="text" placeholder="e.g. Maharashtra" id="state"/>
+        </div>
+        <div class="field">
+          <label>PIN Code</label>
+          <input type="text" placeholder="400001" id="pin"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <div></div>
+      <button class="btn-next" onclick="goTo(2)">
+        Next: Medical Info
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="view-2" style="display:none;">
+    <div class="form-card">
+      <div class="section-title">Vital Stats</div>
+      <div class="field-grid three">
+        <div class="field">
+          <label>Height (cm)</label>
+          <input type="number" placeholder="e.g. 172" id="height" min="50" max="250"/>
+        </div>
+        <div class="field">
+          <label>Weight (kg)</label>
+          <input type="number" placeholder="e.g. 68" id="weight" min="1" max="300"/>
+        </div>
+        <div class="field">
+          <label>Eye Colour</label>
+          <select id="eyecol">
+            <option value="" disabled selected>Select</option>
+            <option>Brown</option><option>Black</option><option>Blue</option>
+            <option>Green</option><option>Hazel</option><option>Grey</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:20px;">
+        <label style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.55);letter-spacing:0.4px;display:block;margin-bottom:10px;">Blood Group *</label>
+        <div class="blood-grid" id="blood-grid">
+          <button class="blood-btn" onclick="selectBlood(this)">A+</button>
+          <button class="blood-btn" onclick="selectBlood(this)">A&#8722;</button>
+          <button class="blood-btn" onclick="selectBlood(this)">B+</button>
+          <button class="blood-btn" onclick="selectBlood(this)">B&#8722;</button>
+          <button class="blood-btn" onclick="selectBlood(this)">AB+</button>
+          <button class="blood-btn" onclick="selectBlood(this)">AB&#8722;</button>
+          <button class="blood-btn" onclick="selectBlood(this)">O+</button>
+          <button class="blood-btn" onclick="selectBlood(this)">O&#8722;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">Conditions &amp; Allergies</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Known Medical Conditions</label>
+          <div class="tag-input-wrap" id="cond-wrap" onclick="this.querySelector('.tag-input').focus()">
+            <input class="tag-input" placeholder="Type condition and press Enter…" onkeydown="addTag(event,'cond-wrap')"/>
+          </div>
+          <span class="field-hint">e.g. Diabetes, Hypertension, Asthma</span>
+        </div>
+        <div class="field" style="margin-top:4px;">
+          <label>Allergies</label>
+          <div class="tag-input-wrap" id="allergy-wrap" onclick="this.querySelector('.tag-input').focus()">
+            <input class="tag-input" placeholder="Type allergy and press Enter…" onkeydown="addTag(event,'allergy-wrap')"/>
+          </div>
+          <span class="field-hint">e.g. Penicillin, Peanuts, Latex, Aspirin</span>
+        </div>
+        <div class="field" style="margin-top:4px;">
+          <label>Current Medications</label>
+          <div class="tag-input-wrap" id="med-wrap" onclick="this.querySelector('.tag-input').focus()">
+            <input class="tag-input" placeholder="Type medication and press Enter…" onkeydown="addTag(event,'med-wrap')"/>
+          </div>
+          <span class="field-hint">Include dosage if possible — e.g. Metformin 500mg</span>
+        </div>
+        <div class="field" style="margin-top:4px;">
+          <label>Past Surgeries / Procedures</label>
+          <textarea placeholder="e.g. Appendectomy (2019), Knee replacement (2022)" id="surgeries"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">Preferences &amp; Flags</div>
+      <div class="toggle-grid" id="toggle-grid">
+        <div class="toggle-item" onclick="toggleItem(this)">
+          <span class="toggle-label">Organ Donor</span>
+          <div class="toggle-sw"></div>
+        </div>
+        <div class="toggle-item" onclick="toggleItem(this)">
+          <span class="toggle-label">DNR Order on File</span>
+          <div class="toggle-sw"></div>
+        </div>
+        <div class="toggle-item" onclick="toggleItem(this)">
+          <span class="toggle-label">Wheelchair User</span>
+          <div class="toggle-sw"></div>
+        </div>
+        <div class="toggle-item" onclick="toggleItem(this)">
+          <span class="toggle-label">Hearing Impaired</span>
+          <div class="toggle-sw"></div>
+        </div>
+        <div class="toggle-item" onclick="toggleItem(this)">
+          <span class="toggle-label">Visually Impaired</span>
+          <div class="toggle-sw"></div>
+        </div>
+        <div class="toggle-item" onclick="toggleItem(this)">
+          <span class="toggle-label">Pacemaker / Implant</span>
+          <div class="toggle-sw"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Directives -->
+    <div class="form-card">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2.5" style="flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Resuscitation
+      </div>
+      <div class="field-grid two">
+        <div class="field">
+          <label>DNR (Do Not Resuscitate) Status</label>
+          <select id="dnr-status">
+            <option value="" disabled selected>Select</option>
+            <option value="yes">Yes — DNR on file</option>
+            <option value="no">No — Attempt resuscitation</option>
+            <option value="unknown">Unknown / Not decided</option>
+          </select>
+          <span class="field-hint">Whether CPR should be attempted if heart stops</span>
+        </div>
+        <div class="field">
+          <label>CPR Preference</label>
+          <select id="cpr-pref">
+            <option value="" disabled selected>Select</option>
+            <option value="allow">Allow CPR</option>
+            <option value="donot">Do Not Allow CPR</option>
+            <option value="limited">Limited CPR Only</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2.5" style="flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Life Support
+      </div>
+      <div class="field-grid two">
+        <div class="field">
+          <label>Ventilator / Life Support</label>
+          <select id="ventilator">
+            <option value="" disabled selected>Select</option>
+            <option value="allow">Allow</option>
+            <option value="donot">Do Not Allow</option>
+            <option value="temporary">Temporary / Short-term Only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Duration Preference</label>
+          <select id="life-support-duration">
+            <option value="" disabled selected>Select</option>
+            <option value="short">Short-term (days)</option>
+            <option value="medium">Medium-term (weeks)</option>
+            <option value="indefinite">Indefinite</option>
+            <option value="na">N/A — Not applicable</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2.5" style="flex-shrink:0"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Blood &amp; Organ
+      </div>
+      <div class="field-grid two">
+        <div class="field">
+          <label>Blood Transfusion</label>
+          <select id="blood-transfusion">
+            <option value="" disabled selected>Select</option>
+            <option value="allow">Allow Transfusion</option>
+            <option value="donot">Do Not Allow</option>
+            <option value="emergency">Emergency Only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Organ Donation Consent</label>
+          <select id="organ-donation">
+            <option value="" disabled selected>Select</option>
+            <option value="yes">Yes — Consent Given</option>
+            <option value="no">No — Not Consented</option>
+            <option value="specific">Specific Organs Only</option>
+          </select>
+        </div>
+        <div class="field" id="specific-organs-field" style="display:none;">
+          <label>Specify Organs for Donation</label>
+          <div class="tag-input-wrap" id="organs-wrap" onclick="this.querySelector('.tag-input').focus()">
+            <input class="tag-input" placeholder="e.g. Kidneys, Corneas — press Enter…" onkeydown="addTag(event,'organs-wrap')"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2.5" style="flex-shrink:0"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Treatment Preferences
+      </div>
+      <div class="field-grid two">
+        <div class="field">
+          <label>Preferred Hospital</label>
+          <input type="text" placeholder="e.g. Apollo Hospital, Delhi" id="pref-hospital"/>
+        </div>
+        <div class="field">
+          <label>Preferred Doctor &amp; Contact</label>
+          <input type="text" placeholder="e.g. Dr. Rajesh Kumar — 9876543210" id="pref-doctor"/>
+        </div>
+        <div class="field">
+          <label>Medicines to Avoid</label>
+          <div class="tag-input-wrap" id="avoid-med-wrap" onclick="this.querySelector('.tag-input').focus()">
+            <input class="tag-input" placeholder="Type medicine and press Enter…" onkeydown="addTag(event,'avoid-med-wrap')"/>
+          </div>
+          <span class="field-hint">Beyond allergies — e.g. blood thinners, steroids</span>
+        </div>
+        <div class="field">
+          <label>Treatment Restrictions</label>
+          <input type="text" placeholder="e.g. No experimental treatments" id="treatment-restrictions"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00c8dc" stroke-width="2.5" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Religious / Personal Choices
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Religious / Cultural Restrictions</label>
+          <input type="text" placeholder="e.g. No pork-derived products, Halal medicines only" id="religious-restrictions"/>
+          <span class="field-hint">Leave blank if none</span>
+        </div>
+        <div class="field" style="margin-top:4px;">
+          <label>Emergency Instructions for Responders</label>
+          <div class="tag-input-wrap" id="emergency-inst-wrap" onclick="this.querySelector('.tag-input').focus()">
+            <input class="tag-input" placeholder="e.g. Inform family before surgery — press Enter…" onkeydown="addTag(event,'emergency-inst-wrap')"/>
+          </div>
+          <span class="field-hint">Specific wishes first responders must follow</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-back" onclick="goTo(1)">&#8592; Back</button>
+      <button class="btn-next" onclick="goTo(3)">
+        Next: Emergency Contacts
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="view-3" style="display:none;">
+    <div class="form-card">
+      <div class="section-title">Primary Emergency Contact</div>
+      <div class="emergency-card">
+        <div class="emergency-label">Contact #1</div>
+        <div class="field-grid two">
+          <div class="field"><label>Full Name *</label><input type="text" placeholder="e.g. Priya Sharma" id="ec1-name"/></div>
+          <div class="field"><label>Relationship *</label>
+            <select id="ec1-rel">
+              <option value="" disabled selected>Select</option>
+              <option>Spouse</option><option>Parent</option><option>Child</option>
+              <option>Sibling</option><option>Friend</option><option>Doctor</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label>Phone Number *</label><input type="tel" placeholder="+91 9876543210" id="ec1-phone"/></div>
+          <div class="field"><label>Alternate Phone</label><input type="tel" placeholder="Optional" id="ec1-phone2"/></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">Secondary Emergency Contact</div>
+      <div class="emergency-card">
+        <div class="emergency-label">Contact #2</div>
+        <div class="field-grid two">
+          <div class="field"><label>Full Name</label><input type="text" placeholder="Optional" id="ec2-name"/></div>
+          <div class="field"><label>Relationship</label>
+            <select id="ec2-rel">
+              <option value="" disabled selected>Select</option>
+              <option>Spouse</option><option>Parent</option><option>Child</option>
+              <option>Sibling</option><option>Friend</option><option>Doctor</option><option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label>Phone Number</label><input type="tel" placeholder="Optional" id="ec2-phone"/></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">Primary Doctor / Physician</div>
+      <div class="field-grid two">
+        <div class="field"><label>Doctor's Name</label><input type="text" placeholder="Dr. Anil Mehta" id="doc-name"/></div>
+        <div class="field"><label>Specialisation</label><input type="text" placeholder="e.g. Cardiologist" id="doc-spec"/></div>
+        <div class="field"><label>Clinic / Hospital</label><input type="text" placeholder="e.g. Apollo Hospital, Delhi" id="doc-hosp"/></div>
+        <div class="field"><label>Contact Number</label><input type="tel" placeholder="+91 XXXXX XXXXX" id="doc-phone"/></div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="section-title">Additional Notes</div>
+      <div class="field">
+        <label>Special Instructions for Responders</label>
+        <textarea style="min-height:100px;" placeholder="Any other info a first responder should know — e.g. severe needle phobia, specific hospital preference, religious considerations, etc." id="notes"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-back" onclick="goTo(2)">&#8592; Back</button>
+      <button class="btn-next" onclick="submitForm()" style="gap:10px;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 1L3 5v6c0 5.25 3.75 10.15 9 11.35C17.25 21.15 21 16.25 21 11V5L12 1z"/></svg>
+        Generate QR Code
+      </button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="view-success" style="display:none;">
+    <div class="success-screen">
+        <h2 style="font-size:clamp(36px,6vw,72px);font-weight:900;letter-spacing:-2px;color:#5b9bd5;margin-bottom:16px;line-height:1.05;">Life First. Privacy Always.</h2>
+      <h3 class="success-title" style="font-size:clamp(22px,3vw,32px);margin-bottom:12px;">Your Medical ID is Ready</h3>
+      <p class="success-sub">Your QR code has been generated. Print it, save it to your phone, or wear it — it could save your life.</p>
+      <div style="margin:0 auto 24px;width:180px;height:180px;padding:12px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+        <img id="qr-img" src="" alt="QR Code" style="width:156px;height:156px;display:block;"/>
+      </div>
+      <div>
+        <button class="btn-primary-full" onclick="downloadQR()">Download QR</button>
+        <button class="btn-ghost">View Dashboard</button>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.25);margin-top:28px;">Your data is end-to-end encrypted and never sold.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>&#169; 2026 AegisQR. All rights reserved. &middot; <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Privacy Policy</a> &middot; <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;">Terms</a></p>
+</footer>
+
+<script>
+let currentStep = 1;
+
+function goTo(n) {
+  ['view-1','view-2','view-3','view-success'].forEach(function(id,i){
+    document.getElementById(id).style.display = (i+1 === n) ? 'block' : 'none';
+  });
+  currentStep = n;
+  var pct = [33,66,100,100];
+  document.getElementById('progress').style.width = pct[n-1] + '%';
+
+  for(var i=1;i<=3;i++){
+    var el = document.getElementById('step-ind-'+i);
+    el.className = 'step';
+    if(i < n) el.classList.add('done');
+    else if(i === n) el.classList.add('active');
+    var num = el.querySelector('.step-num');
+    if(i < n) num.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    else num.textContent = i;
+  }
+  for(var j=1;j<=2;j++){
+    var ln = document.getElementById('line-'+j);
+    ln.className = 'step-line' + (j < n ? ' done' : '');
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+async function submitForm() {
+
+  const getTags = (wrapId) => {
+    return Array.from(document.querySelectorAll(`#${wrapId} .tag`))
+      .map(tag => tag.childNodes[0].textContent.trim());
+  };
+
+// Calculate age from DOB
+  const dobValue = document.getElementById('dob').value;
+  let age = null;
+  if (dobValue) {
+    const birthDate = new Date(dobValue);
+    const diff = Date.now() - birthDate.getTime();
+    const today = new Date();
+    age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+  }
+
+  
+  const data = {
+    name: (document.getElementById('fname').value + " " + document.getElementById('lname').value).trim(),
+    age,
+    gender: document.getElementById('gender').value || null,
+    height: document.getElementById('height').value || null,
+
+  // 🔥 MATCH BACKEND KEYS
+    blood_type: document.querySelector('.blood-btn.selected')?.innerText || null,
+
+    allergies: getTags('allergy-wrap'), 
+    medical_conditions: getTags('cond-wrap'),
+    medications: getTags('med-wrap'),
+
+    medicines_to_avoid: getTags('avoid-med-wrap'),
+
+    specific_organs: getTags('organs-wrap'),
+
+    emergency_instructions: getTags('emergency-inst-wrap'),
+
+    dnr_status: document.getElementById('dnr-status').value || null,
+    cpr_preference: document.getElementById('cpr-pref').value || null,
+    ventilator: document.getElementById('ventilator').value || null,
+    life_support_duration: document.getElementById('life-support-duration').value || null,
+
+    blood_transfusion: document.getElementById('blood-transfusion').value || null,
+    organ_donation: document.getElementById('organ-donation').value || null,
+
+    preferred_hospital: document.getElementById('pref-hospital').value || null,
+    preferred_doctor: document.getElementById('pref-doctor').value || null,
+
+    treatment_restrictions: document.getElementById('treatment-restrictions').value || null,
+    religious_restrictions: document.getElementById('religious-restrictions').value || null,
+  
+    emergency_contact_name: document.getElementById('ec1-name').value || null,
+    emergency_contact_phone: document.getElementById('ec1-phone').value || null
+  };
+
+  // SEND TO BACKEND
+  const res = await fetch('http://localhost:3000/save', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+
+  generateQR(result.id);  
+
+  // SHOW SUCCESS
+  document.getElementById('view-3').style.display = 'none';
+  document.getElementById('view-success').style.display = 'block';
+  document.getElementById('form-header').style.display = 'none';
+
+}
+
+function selectBlood(btn) {
+  document.querySelectorAll('.blood-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+}
+
+function toggleItem(el) {
+  el.classList.toggle('on');
+}
+
+function addTag(e, wrapId) {
+  if(e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    var inp = e.target;
+    var val = inp.value.trim().replace(/,$/, '');
+    if(!val) return;
+    var wrap = document.getElementById(wrapId);
+    var tag = document.createElement('div');
+    tag.className = 'tag';
+    tag.innerHTML = val + '<span class="tag-x" onclick="this.parentElement.remove()">&times;</span>';
+    wrap.insertBefore(tag, inp);
+    inp.value = '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var organSelect = document.getElementById('organ-donation');
+  if (organSelect) {
+    organSelect.addEventListener('change', function() {
+      var field = document.getElementById('specific-organs-field');
+      if (field) field.style.display = this.value === 'specific' ? 'block' : 'none';
+    });
+  }
+});
+
+function previewPhoto(input) {
+  if(input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var circle = input.closest('.avatar-circle');
+      circle.style.backgroundImage = 'url('+e.target.result+')';
+      circle.style.backgroundSize = 'cover';
+      circle.style.backgroundPosition = 'center';
+      circle.querySelector('svg').style.display = 'none';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+</script>
+<script>
+function downloadQR() {
+  var img = document.getElementById('qr-img');
+  if (!img || !img.src) return;
+  var a = document.createElement('a');
+  a.href = img.src;
+  a.download = 'AegisQR_MedicalID.png';
+  a.target = '_blank';
+  a.click();
+}
+
+function generateQR(id) {
+  var img = document.getElementById('qr-img');
+  if (!img) return;
+
+  // 🔥 IMPORTANT: your backend URL
+  const profileUrl = `http://localhost:3000/user/${id}`;
+
+  const encoded = encodeURIComponent(profileUrl);
+
+  img.src = `https://api.qrserver.com/v1/create-qr-code/?size=156x156&data=${encoded}`;
+}
+</script>
+</body>
+</html>
